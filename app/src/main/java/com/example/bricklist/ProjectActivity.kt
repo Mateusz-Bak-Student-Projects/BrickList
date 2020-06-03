@@ -17,6 +17,8 @@ class ProjectActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
 
+        title = intent.getStringExtra("name")
+
         db = BrickDbHelper(this, null)
         items = db.getInventory(intent.getIntExtra("id", -1))
 
@@ -24,6 +26,13 @@ class ProjectActivity : AppCompatActivity() {
             adapter = BrickListAdapter(items)
             layoutManager = LinearLayoutManager(this@ProjectActivity)
             itemAnimator?.changeDuration = 0
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        for (item in items.filter { it.dirty }) {
+            db.updateItemQuantity(item.id, item.inStore)
         }
     }
 }

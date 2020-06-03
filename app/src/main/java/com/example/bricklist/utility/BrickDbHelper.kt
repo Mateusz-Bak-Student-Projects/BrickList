@@ -11,8 +11,6 @@ import androidx.core.database.getIntOrNull
 import com.example.bricklist.model.Inventory
 import com.example.bricklist.model.InventoryItem
 import com.example.bricklist.model.Project
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.io.File
 
 fun loadBrickDb(context: Context) {
@@ -93,6 +91,7 @@ class BrickDbHelper(
         if (db.delete("Inventories", "id=?", arrayOf(project.id.toString())) == 0) {
             throw RuntimeException("The project could not be deleted")
         }
+        db.setTransactionSuccessful()
         db.endTransaction()
     }
 

@@ -28,6 +28,8 @@ class ProjectListAdapter(private val projectList: List<Project>) :
                 context.startActivity(
                     Intent(context, ProjectActivity::class.java)
                         .putExtra("id", project.id)
+                        .putExtra("name", project.name)
+                        .putExtra("active", project.active)
                 )
             }
         }

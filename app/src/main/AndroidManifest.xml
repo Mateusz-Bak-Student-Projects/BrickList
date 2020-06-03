@@ -12,9 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ProjectActivity"></activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".ProjectActivity" />
         <activity
             android:name=".CreateProjectActivity"
+            android:label="@string/title_activity_create_project"
             android:noHistory="true"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MainActivity">

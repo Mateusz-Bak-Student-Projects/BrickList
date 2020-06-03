@@ -11,5 +11,11 @@ data class InventoryItem(
     val code: String
 ) {
     var inStore: Int = 0
+        set(value) {
+            field = value
+            dirty = true
+        }
     var image: Bitmap? = null
+    var dirty = false
+        private set
 }

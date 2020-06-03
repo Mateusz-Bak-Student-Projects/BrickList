@@ -1,0 +1,12 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:defaultValue="http://fcds.cs.put.poznan.pl/MyWeb/BL/"
+        android:key="url_prefix"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="Prefix of URL" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="show_archived"
+        android:title="Show archived" />
+</PreferenceScreen>
