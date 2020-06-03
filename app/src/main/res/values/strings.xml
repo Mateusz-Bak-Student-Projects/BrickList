@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">BrickList</string>
+    <string name="hint_project_name">Project name</string>
+    <string name="hint_set_id">Set ID</string>
+    <string name="button_add">Add</string>
+    <string name="error_set_not_found">Set not found</string>
+    <string name="item_image_description">Item image</string>
+    <string name="increment_quantity_button">Increment quantity</string>
+    <string name="decrement_quantity_button">Decrement quantity</string>
+    <string name="brick_description">%1$s [%2$s]</string>
+    <string name="quantity_text">%1$d of %2$d</string>
 </resources>
