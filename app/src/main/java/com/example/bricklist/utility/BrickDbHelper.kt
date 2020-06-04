@@ -153,7 +153,7 @@ class BrickDbHelper(
                                 put("QuantityInSet", quantity)
                                 put("QuantityInStore", 0)
                                 put("ColorID", colorID)
-                                put("Extra", 0)
+                                put("Extra", if (item.extra == "N") 0 else 1)
                             }) >= 0) {
                             return InventoryItem(
                                 id,
@@ -161,7 +161,8 @@ class BrickDbHelper(
                                 name,
                                 color,
                                 quantity,
-                                item.itemID
+                                item.itemID,
+                                item.extra != "N"
                             ).apply {
                                 image = getImage(itemID, item.itemID, colorID, item.color)
                             }
@@ -181,7 +182,7 @@ class BrickDbHelper(
         val query =
             "select distinct items.id, items.itemID, coalesce(Parts.NamePL, Parts.Name), " +
                     "coalesce(Colors.NamePL, Colors.Name), items.QuantityInSet, items.QuantityInStore, " +
-                    "Parts.Code, Codes.Image " +
+                    "Parts.Code, Codes.Image, items.Extra " +
                     "from InventoriesParts items " +
                     "left join Parts on items.ItemID=Parts.id " +
                     "left join Colors on items.ColorID=Colors.id " +
@@ -197,7 +198,8 @@ class BrickDbHelper(
             val inStore = cursor.getInt(5)
             val code = cursor.getString(6)
             val imageBytes = cursor.getBlobOrNull(7)
-            items.add(InventoryItem(id, itemID, name, color, inSet, code).apply {
+            val extra = cursor.getInt(8) != 0
+            items.add(InventoryItem(id, itemID, name, color, inSet, code, extra).apply {
                 this.inStore = inStore
                 if (imageBytes != null) {
                     image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.count())

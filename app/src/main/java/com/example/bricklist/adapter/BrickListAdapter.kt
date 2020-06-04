@@ -2,6 +2,7 @@ package com.example.bricklist.adapter
 
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,10 @@ class BrickListAdapter(private val brickList: List<InventoryItem>) :
     override fun onBindViewHolder(holder: BrickViewHolder, position: Int) {
         val item = brickList[position]
         holder.view.apply {
-            itemName.text = item.name
+            val name = if (!item.extra) item.name else "[Extra] ${item.name}".also {
+                itemName.setTypeface(itemName.typeface, Typeface.BOLD_ITALIC)
+            }
+            itemName.text = name
             itemDescription.text =
                 context.getString(R.string.brick_description, item.color, item.code)
             itemQuantity.text = context.getString(R.string.quantity_text, item.inStore, item.inSet)

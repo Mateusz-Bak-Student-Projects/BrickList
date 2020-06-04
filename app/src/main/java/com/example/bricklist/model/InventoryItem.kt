@@ -8,7 +8,8 @@ data class InventoryItem(
     val name: String,
     val color: String,
     val inSet: Int,
-    val code: String
+    val code: String,
+    val extra: Boolean = false
 ) {
     var inStore: Int = 0
         set(value) {
