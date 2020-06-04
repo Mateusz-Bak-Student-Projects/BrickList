@@ -10,6 +10,7 @@ import com.example.bricklist.adapter.BrickListAdapter
 import com.example.bricklist.model.InventoryItem
 import com.example.bricklist.model.Project
 import com.example.bricklist.utility.BrickDbHelper
+import com.example.bricklist.utility.InventoryExporter
 import kotlinx.android.synthetic.main.activity_project.*
 
 
@@ -102,7 +103,37 @@ class ProjectActivity : AppCompatActivity() {
                 brickList.adapter?.notifyDataSetChanged()
             }
             R.id.export -> {
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+                builder.setTitle("Select desired condition for missing parts")
+                var selected = InventoryExporter.Option.ALL
+                builder.setSingleChoiceItems(
+                    arrayOf("All", "Only new", "Only used"),
+                    0
+                ) { _, it: Int ->
+                    selected = InventoryExporter.Option.fromInt(it)
+                }
 
+                builder.setPositiveButton(
+                    "Export"
+                ) { dialog, _ ->
+                    if (project != null) {
+                        InventoryExporter(this).export(
+                            project?.id ?: -1,
+                            project?.name ?: "err",
+                            selected
+                        )
+                    }
+                    dialog.dismiss()
+                }
+
+                builder.setNegativeButton(
+                    "Cancel"
+                ) { dialog, _ ->
+                    dialog.dismiss()
+                }
+
+                builder.create()
+                builder.show()
             }
             R.id.archive -> {
                 project?.active = false
@@ -114,7 +145,6 @@ class ProjectActivity : AppCompatActivity() {
                 val builder: AlertDialog.Builder = AlertDialog.Builder(this)
                 builder.setTitle("Delete project")
                 builder.setMessage("Are you sure you want to delete this project?")
-                builder.setCancelable(false)
                 builder.setPositiveButton(
                     "Delete"
                 ) { dialog, _ ->

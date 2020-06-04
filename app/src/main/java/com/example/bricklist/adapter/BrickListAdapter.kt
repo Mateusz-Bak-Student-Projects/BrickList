@@ -36,6 +36,9 @@ class BrickListAdapter(private val brickList: List<InventoryItem>) :
             if (item.inStore == item.inSet) {
                 itemName.setTextColor(Color.LTGRAY)
                 itemName.paintFlags = itemName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            } else {
+                itemName.setTextColor(Color.BLACK)
+                itemName.paintFlags = itemName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
             }
             increment.setOnClickListener {
                 if (item.inStore < item.inSet) {

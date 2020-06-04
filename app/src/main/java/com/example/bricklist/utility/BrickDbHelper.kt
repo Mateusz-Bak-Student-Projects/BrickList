@@ -260,4 +260,27 @@ class BrickDbHelper(
         }
         return null
     }
+
+    fun getMissingItems(projectID: Int): List<InventoryExporter.Item> {
+        val items = ArrayList<InventoryExporter.Item>()
+        val db = writableDatabase
+        val query =
+            "select distinct items.id, Parts.Code, ItemTypes.Code, Colors.Code, " +
+                    "items.QuantityInSet - items.QuantityInStore " +
+                    "from InventoriesParts items " +
+                    "left join Parts on items.ItemID=Parts.id " +
+                    "left join Colors on items.ColorID=Colors.id " +
+                    "left join ItemTypes on items.TypeID=ItemTypes.id " +
+                    "where items.InventoryID=? and items.QuantityInSet - items.QuantityInStore > 0"
+        val cursor = db.rawQuery(query, arrayOf(projectID.toString()))
+        while (cursor.moveToNext()) {
+            val itemID = cursor.getString(1)
+            val type = cursor.getString(2)
+            val color = cursor.getString(3)
+            val quantity = cursor.getInt(4)
+            items.add(InventoryExporter.Item(itemID, type, color, quantity))
+        }
+        cursor.close()
+        return items
+    }
 }
