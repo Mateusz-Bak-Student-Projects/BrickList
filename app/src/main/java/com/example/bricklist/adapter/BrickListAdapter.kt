@@ -1,5 +1,7 @@
 package com.example.bricklist.adapter
 
+import android.graphics.Color
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +29,10 @@ class BrickListAdapter(private val brickList: List<InventoryItem>) :
                 context.getString(R.string.brick_description, item.color, item.code)
             itemQuantity.text = context.getString(R.string.quantity_text, item.inStore, item.inSet)
             if (item.image != null) itemImage.setImageBitmap(item.image)
+            if (item.inStore == item.inSet) {
+                itemName.setTextColor(Color.LTGRAY)
+                itemName.paintFlags = itemName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            }
             increment.setOnClickListener {
                 if (item.inStore < item.inSet) {
                     item.inStore++

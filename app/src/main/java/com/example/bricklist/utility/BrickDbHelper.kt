@@ -77,7 +77,6 @@ class BrickDbHelper(
         if (db.update("Inventories", ContentValues().apply {
                 put("Name", project.name)
                 put("Active", project.active)
-                put("LastAccessed", project.lastAccessed)
             }, "id=?", arrayOf(project.id.toString())) == 0
         ) {
             throw RuntimeException("The project could not be updated")
@@ -111,9 +110,9 @@ class BrickDbHelper(
         return projects
     }
 
-    fun createInventory(inventoryID: Int, inventory: Inventory): List<InventoryItem> {
+    fun createInventory(inventoryID: Int, inventory: Inventory): MutableList<InventoryItem> {
         val items = ArrayList<InventoryItem>()
-        for (item in inventory.items.filter { it.alternate == "N" }) {
+        for (item in inventory.items.filter { it.alternate == "N" }.sortedBy { it.itemID }) {
             try {
                 val inventoryItem = createInventoryItem(inventoryID, item)
                 items.add(inventoryItem)
@@ -176,9 +175,9 @@ class BrickDbHelper(
         throw RuntimeException("Unable to get an id for inventory item")
     }
 
-    fun getInventory(projectID: Int): List<InventoryItem> {
+    fun getInventory(projectID: Int): MutableList<InventoryItem> {
         val items = ArrayList<InventoryItem>()
-        val db = readableDatabase
+        val db = writableDatabase
         val query =
             "select distinct items.id, items.itemID, coalesce(Parts.NamePL, Parts.Name), " +
                     "coalesce(Colors.NamePL, Colors.Name), items.QuantityInSet, items.QuantityInStore, " +
@@ -187,7 +186,7 @@ class BrickDbHelper(
                     "left join Parts on items.ItemID=Parts.id " +
                     "left join Colors on items.ColorID=Colors.id " +
                     "left join Codes on items.ItemID=Codes.ItemID and items.ColorID=Codes.ColorID " +
-                    "where items.InventoryID=?"
+                    "where items.InventoryID=? order by Parts.Code"
         val cursor = db.rawQuery(query, arrayOf(projectID.toString()))
         while (cursor.moveToNext()) {
             val id = cursor.getInt(0)
@@ -206,6 +205,10 @@ class BrickDbHelper(
             })
         }
         cursor.close()
+        db.execSQL(
+            "update Inventories set LastAccessed=strftime('%s', 'now') where id=?",
+            arrayOf(projectID.toString())
+        )
         return items
     }
 

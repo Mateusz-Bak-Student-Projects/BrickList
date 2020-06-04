@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/orderByCode"
+        app:showAsAction="never"
+        android:title="@string/menu_order_by_code" />
+
+    <item
+        android:id="@+id/orderByColor"
+        app:showAsAction="never"
+        android:title="@string/menu_order_by_color" />
+
+    <item
+        android:id="@+id/export"
+        app:showAsAction="never"
+        android:title="@string/menu_export" />
+
+    <item
+        android:id="@+id/archive"
+        app:showAsAction="never"
+        android:title="@string/menu_archive" />
+
+    <item
+        android:id="@+id/unarchive"
+        app:showAsAction="never"
+        android:title="@string/menu_unarchive" />
+
+    <item
+        android:id="@+id/delete"
+        app:showAsAction="never"
+        android:title="@string/menu_delete" />
+</menu>

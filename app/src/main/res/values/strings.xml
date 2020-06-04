@@ -13,4 +13,10 @@
     <string name="settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_create_project">Create project</string>
+    <string name="menu_order_by_code">Order by Code</string>
+    <string name="menu_order_by_color">Order by Color</string>
+    <string name="menu_export">Save missing parts</string>
+    <string name="menu_archive">Archive</string>
+    <string name="menu_unarchive">Unarchive</string>
+    <string name="menu_delete">Delete</string>
 </resources>
